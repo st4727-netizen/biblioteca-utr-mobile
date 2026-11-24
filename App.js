@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthProvider } from './src/context/AuthContext';
+import { navigationRef } from './src/navigation/NavigationService';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 
@@ -18,14 +19,14 @@ export default function App() {
             component={LoginScreen}
             options={{ headerShown: false }}
           />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{
-                title: 'Crear cuenta',
-                headerTintColor: '#17365D',
-              }}
-            />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              title: 'Crear cuenta',
+              headerTintColor: '#17365D',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
