@@ -67,11 +67,6 @@ export default function CatalogScreen({ navigation }) {
           onPress: async () => {
             try {
               await logout();
-
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }],
-              });
             } catch (error) {
               Alert.alert(
                 'Error',
@@ -112,7 +107,7 @@ export default function CatalogScreen({ navigation }) {
   // Navegar a solicitud de préstamo
   const solicitarPrestamo = (libro) => {
     navigation.navigate('LoanRequest', {
-      libro: libro,
+      libro,
     });
   };
 
@@ -447,4 +442,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
+
 

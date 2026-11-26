@@ -21,7 +21,10 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Validación', 'Completa tu correo y contraseña.');
+      Alert.alert(
+        'Validación',
+        'Completa tu correo y contraseña.'
+      );
       return;
     }
 
@@ -41,7 +44,10 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Biblioteca UTR</Text>
-      <Text style={styles.subtitle}>Inicia sesión en tu cuenta</Text>
+
+      <Text style={styles.subtitle}>
+        Inicia sesión en tu cuenta
+      </Text>
 
       <TextInput
         style={styles.input}
@@ -68,23 +74,18 @@ export default function LoginScreen({ navigation }) {
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.buttonText}>Iniciar sesión</Text>
+          <Text style={styles.buttonText}>
+            Iniciar sesión
+          </Text>
         )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.demoButton}
-        onPress={() => navigation.navigate('Catalog')}
-      >
-        <Text style={styles.demoButtonText}>
-            Explorar catálogo (modo demostración)
-        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('Register')}
       >
-        <Text style={styles.link}>¿No tienes cuenta? Regístrate</Text>
+        <Text style={styles.link}>
+          ¿No tienes cuenta? Regístrate
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -138,21 +139,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 25,
     fontWeight: '600',
-  },
-  demoButton: {
-  backgroundColor: '#DCE7FF',
-  padding: 14,
-  borderRadius: 10,
-  alignItems: 'center',
-  marginTop: 18,
-  borderWidth: 1,
-  borderColor: '#17365D',
-  },
-
-  demoButtonText: {
-  color: '#17365D',
-  fontWeight: 'bold',
-  fontSize: 14,
   },
 });
 
