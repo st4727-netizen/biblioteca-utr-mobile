@@ -73,6 +73,15 @@ export default function LoginScreen({ navigation }) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        style={styles.demoButton}
+        onPress={() => navigation.navigate('Catalog')}
+      >
+        <Text style={styles.demoButtonText}>
+            Explorar catálogo (modo demostración)
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
         onPress={() => navigation.navigate('Register')}
       >
         <Text style={styles.link}>¿No tienes cuenta? Regístrate</Text>
@@ -129,6 +138,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 25,
     fontWeight: '600',
+  },
+  demoButton: {
+  backgroundColor: '#DCE7FF',
+  padding: 14,
+  borderRadius: 10,
+  alignItems: 'center',
+  marginTop: 18,
+  borderWidth: 1,
+  borderColor: '#17365D',
+  },
+
+  demoButtonText: {
+  color: '#17365D',
+  fontWeight: 'bold',
+  fontSize: 14,
   },
 });
 
