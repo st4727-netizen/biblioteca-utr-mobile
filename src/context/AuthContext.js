@@ -1,5 +1,4 @@
 
-
 import * as SecureStore from 'expo-secure-store';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { resetToLogin } from '../navigation/NavigationService';
@@ -11,7 +10,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Recuperar sesión guardada
+  // Recuperar únicamente sesiones de usuarios USER
   useEffect(() => {
     const loadSession = async () => {
       try {
@@ -19,10 +18,22 @@ export function AuthProvider({ children }) {
         const savedUser = await SecureStore.getItemAsync('user_data');
 
         if (token && savedUser) {
-          setUser(JSON.parse(savedUser));
+          const userData = JSON.parse(savedUser);
+
+          if (String(userData.rol).toUpperCase() === 'USER') {
+            setUser(userData);
+          } else {
+            await SecureStore.deleteItemAsync('user_jwt_token');
+            await SecureStore.deleteItemAsync('user_data');
+          }
+        } else {
+          await SecureStore.deleteItemAsync('user_jwt_token');
+          await SecureStore.deleteItemAsync('user_data');
         }
       } catch (error) {
         console.log('Error al recuperar sesión:', error);
+        await SecureStore.deleteItemAsync('user_jwt_token');
+        await SecureStore.deleteItemAsync('user_data');
       } finally {
         setLoading(false);
       }
@@ -34,12 +45,12 @@ export function AuthProvider({ children }) {
   // Gestionar sesiones expiradas (HTTP 401)
   useEffect(() => {
     setUnauthorizedHandler(async () => {
-        setUser(null);
-        resetToLogin();
+      setUser(null);
+      resetToLogin();
     });
 
     return () => {
-        setUnauthorizedHandler(null);
+      setUnauthorizedHandler(null);
     };
   }, []);
 
@@ -50,7 +61,12 @@ export function AuthProvider({ children }) {
       body: JSON.stringify({ email, password }),
     });
 
-    await SecureStore.setItemAsync('user_jwt_token', data.token);
+    // Mobile es exclusivamente para usuarios USER
+    if (String(data?.user?.rol).toUpperCase() !== 'USER') {
+      throw new Error(
+        'Esta aplicación móvil es exclusiva para estudiantes. Las cuentas ADMIN deben utilizar la plataforma web.'
+      );
+    }
 
     const userData = {
       id: data.user.id,
@@ -59,7 +75,9 @@ export function AuthProvider({ children }) {
       rol: data.user.rol,
     };
 
+    await SecureStore.setItemAsync('user_jwt_token', data.token);
     await SecureStore.setItemAsync('user_data', JSON.stringify(userData));
+
     setUser(userData);
 
     return userData;
@@ -106,3 +124,4 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
+
